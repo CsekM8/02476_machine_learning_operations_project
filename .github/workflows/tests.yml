@@ -48,12 +48,17 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Setup Google Cloud SDK
-      uses: 'google-github-actions/setup-gcloud@v1'
+  
+    - name: 'Authenticating to GCP Service Agent'
+      uses: 'google-github-actions/auth@v1'
       with:
-        project_id: mlops-hotdogs
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+        credentials_json: '${{ secrets.GCL_SA_KEY }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
 
     - name: Get data
       run: dvc pull
